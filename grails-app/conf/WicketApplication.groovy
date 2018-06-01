@@ -5,26 +5,40 @@ import org.apache.wicket.Application
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.apache.wicket.RuntimeConfigurationType
-import org.apache.wicket.request.mapper.MountedMapper
 import org.apache.wicket.request.mapper.parameter.UrlPathPageParametersEncoder
+
+import org.wicketstuff.rest.Index
+import org.apache.wicket.request.resource.ResourceReference
+import org.wicketstuff.rest.resource.PersonsRestResource
+import org.apache.wicket.request.resource.IResource
+
 
 public class WicketApplication extends WebApplication {
     
     /**
      * @see org.apache.wicket.Application#getHomePage()
      */
-    Class getHomePage() { HomePage.class }
+    Class getHomePage() { Index.class }
+    //Class getHomePage() { HomePage.class }
 
     /**
      * Configures Grails' application context to be used for @SpringBean injection
      */
     protected void init() {
         super.init()
+
+        mountResource("/personsmanager", new ResourceReference("restReference") {
+            PersonsRestResource resource = new PersonsRestResource();
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+
+        });
+
         //addComponentInstantiationListener(new SpringComponentInjector(this, ApplicationHolder.getApplication().getMainContext(), false));
         getComponentInstantiationListeners().add(new SpringComponentInjector(this)); //replaces above Spring injection in wicket 1.4
 
-        //replaces mountBookmarkablePage() in wicket 1.4
-        mount(new MountedMapper("/home1",HomePage.class, new UrlPathPageParametersEncoder()))
         mountPage("/home2",HomePage.class)
 
     }
