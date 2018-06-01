@@ -21,7 +21,10 @@ https://grailslog.wordpress.com/2018/06/01/how-to-add-an-external-library-or-jar
 **HOW TO TEST:**
 
 _FROM UI_
-Access http://localhost:8080
+
+Access http://localhost:8080 to view Index.html
+
+Access http://localhost:8080/personsmanager/persons to view json output of Index.html
 
 
 _COMMANDLINE TESTING OF GET, POST, DELETE_
