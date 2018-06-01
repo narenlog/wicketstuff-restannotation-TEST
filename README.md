@@ -1,15 +1,30 @@
 # wicketstuff-restannotation-TEST
+
+
 Adding wicketstuff-restannotations to a grails project using wicket via the grails-wicket plugin
+https://ci.apache.org/projects/wicket/guide/6.x/guide/wicketstuff.html#wicketstuff_6
 
+**Uses Example Code from here:**
+https://github.com/wicketstuff/core/tree/master/wicketstuff-restannotations-parent
 
-**Requires latest grails-wicket plugin upgraded to wicket 6.28.0..** package and install it manually
+**REQUIREMENTS:**
+
+_Requires latest grails-wicket plugin upgraded to wicket 6.28.0..** package and install it manually_
+
 https://github.com/narenlog/grails-wicket
 
-**Instructions on how to add wicketstuff-restannotations library to grails-wicket plugin :**
+_Instructions on how to add wicketstuff-restannotations library to grails-wicket plugin :_
+
 BuildConfig.groovy of grails-wicket plugin adds dependency for wicketstuff-restannotations
 https://grailslog.wordpress.com/2018/06/01/how-to-add-an-external-library-or-jar-file-that-is-not-a-grails-plugin-to-your-grails-project/
 
-**COMMANDLINE TESTING OF GET, POST, DELETE**
+**HOW TO TEST:**
+
+_FROM UI_
+Access http://localhost:8080
+
+
+_COMMANDLINE TESTING OF GET, POST, DELETE_
 
 ```
 curl -i -X GET http://localhost:8080/personsmanager/persons
