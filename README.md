@@ -18,6 +18,55 @@ _Instructions on how to add wicketstuff-restannotations library to grails-wicket
 BuildConfig.groovy of grails-wicket plugin adds dependency for wicketstuff-restannotations
 https://grailslog.wordpress.com/2018/06/01/how-to-add-an-external-library-or-jar-file-that-is-not-a-grails-plugin-to-your-grails-project/
 
+**NOTES ON @SPRINGBEAN SERVICE INJECTION:**
+
+If you need to inject a @SpringBean service to the resource , add the below to the constructor of the RestResource. needed because @SpringBean can only be injected into a wicket component. SEE: https://stackoverflow.com/a/23561333
+
+
+```
+PersonsRestResource.java:
+    @SpringBean(name="testService")
+    TestServiceInterface testService
+
+    private final List<PersonPojo> persons = new ArrayList<PersonPojo>();
+     
+    public PersonsRestResource() {
+        super(new JsonWebSerialDeserial(new GsonObjectSerialDeserial()));
+
+        Injector.get().inject(this)   //SEE: https://stackoverflow.com/a/23561333
+    }
+
+    @MethodMapping("/persons")
+    public List<PersonPojo> getAllPersons() {
+
+        TestObject testObj = testService.findByName("test-name")
+        persons.add(new PersonPojo(testObj.getName(), testObj.getEmail(), testObj.getPassword()));
+
+        return persons;
+    }
+```
+
+       
+IMPORTANT: Ensure that you mount the RestResource in WicketApplication.groovy **AFTER** the SpringComponentInjector
+
+```
+WicketApplication.groovy:
+        getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+
+    
+
+        //MOUNT ONLY AFTER SpringComponentInjector above.. SEE: https://stackoverflow.com/a/23561333
+        mountResource("/personsmanager", new ResourceReference("restReference") {
+            PersonsRestResource resource = new PersonsRestResource();
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+
+        });
+```
+       
+
 **HOW TO TEST:**
 
 _FROM UI_
